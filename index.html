@@ -3,189 +3,308 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>GEN AI ROUND 1 — VoiceBot (Stage 1)</title>
+<title>GEN AI — VoiceBot (Stage 1) — Uma Sesha Sai Chinta</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
-  body{font-family:Inter,system-ui,Arial;max-width:880px;margin:28px auto;padding:18px;color:#111}
-  h1{font-size:22px;margin-bottom:6px}
-  .panel{border:1px solid #e4e4e7;padding:14px;border-radius:10px;margin-top:12px;background:#fff}
-  textarea,input{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd}
-  button{padding:10px 14px;border-radius:8px;border:0;background:#0b63ff;color:#fff;cursor:pointer}
-  button.secondary{background:#444;margin-left:8px}
-  .row{display:flex;gap:8px;align-items:center}
-  .small{font-size:13px;color:#666}
-  .sample-q button{margin:6px 6px 6px 0;background:#eef2ff;color:#08306b;border:0}
-  .response{min-height:96px;white-space:pre-wrap;padding:12px;background:#fafafa;border-radius:8px;border:1px solid #eee}
-  footer{font-size:12px;color:#666;margin-top:18px}
+  :root{
+    --bg:#f3fbf6;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#0f9d58; /* green accent */
+    --accent-2:#0a7f44;
+    --glass: rgba(15,157,88,0.08);
+    --radius:14px;
+    --maxw:920px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background: linear-gradient(180deg, #f7fff8 0%, var(--bg) 100%);
+    font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    color:#0f1724;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display:flex;
+    justify-content:center;
+    padding:28px 16px;
+  }
+  .wrap{
+    width:100%;
+    max-width:var(--maxw);
+  }
+  header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:16px;
+  }
+  .logo{
+    width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px;box-shadow:0 6px 22px rgba(15,157,88,0.16);
+  }
+  h1{margin:0;font-weight:700;font-size:20px}
+  p.lead{margin:4px 0 0;color:var(--muted);font-size:14px}
+
+  /* layout */
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 380px;
+    gap:18px;
+    margin-top:18px;
+  }
+  @media (max-width:980px){ .grid{grid-template-columns:1fr;padding-bottom:16px} }
+
+  /* main card */
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:18px;
+    box-shadow:0 6px 22px rgba(15,23,42,0.04);
+    border:1px solid rgba(7, 43, 20, 0.04);
+  }
+
+  .persona{
+    width:100%; padding:12px;border-radius:10px;border:1px dashed rgba(10,10,10,0.05);font-size:14px;
+    resize:vertical; min-height:86px;
+  }
+
+  /* mic controls */
+  .controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .mic{
+    width:72px;height:72px;border-radius:20px;border:0;background:linear-gradient(180deg,var(--accent),var(--accent-2));color:#fff;font-size:20px;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 30px rgba(10,120,70,0.14);
+    transition:transform .14s ease, box-shadow .14s;
+  }
+  .mic.pulse{animation:micPulse 1.6s infinite;}
+  @keyframes micPulse{
+    0%{transform:scale(1);box-shadow:0 12px 30px rgba(10,120,70,0.14)}
+    50%{transform:scale(1.04);box-shadow:0 22px 40px rgba(10,120,70,0.18)}
+    100%{transform:scale(1);box-shadow:0 12px 30px rgba(10,120,70,0.14)}
+  }
+
+  .btn{padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+  .btn.ghost{background:transparent;border:1px solid rgba(15,157,88,0.12);color:var(--accent)}
+  .status{font-size:13px;color:var(--muted)}
+
+  .inputRow{display:flex;gap:10px;margin-top:12px}
+  .input{flex:1;padding:10px;border-radius:10px;border:1px solid #e6eee7;background:var(--glass);font-size:14px}
+
+  /* response */
+  .response{
+    margin-top:14px;padding:14px;border-radius:10px;background:linear-gradient(180deg,#ffffff,#f7fff8);min-height:120px;border:1px solid rgba(10,10,10,0.03);
+    white-space:pre-wrap;font-size:15px;color:#073b2c;
+  }
+
+  /* sidebar */
+  .sideTitle{font-weight:600;margin:0 0 8px 0}
+  .samples{display:flex;flex-wrap:wrap;gap:8px}
+  .sampleBtn{background:transparent;border:1px solid rgba(10,10,10,0.06);padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--accent)}
+  .hint{font-size:13px;color:var(--muted);margin-top:8px}
+
+  /* footer */
+  footer{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .credit{font-size:13px;color:var(--muted)}
+  .credit a{color:var(--accent);text-decoration:none;font-weight:600}
+
+  /* small */
+  .muted{color:var(--muted);font-size:13px}
+  .ok{color:var(--accent);font-weight:700}
 </style>
 </head>
 <body>
-  <h1>GEN AI — Interview VoiceBot (Stage 1)</h1>
-  <div class="small">Click 🎙 Start and ask interview questions. Works best in Chrome on desktop/Android. Text fallback included.</div>
+  <div class="wrap">
+    <header>
+      <div class="logo">GT</div>
+      <div>
+        <h1>GEN AI — VoiceBot (Stage 1)</h1>
+        <p class="lead">Interactive, zero-server voicebot demo — click the mic or type a question. Created for the AI Agent Team assessment.</p>
+      </div>
+    </header>
 
-  <div class="panel">
-    <label><strong>Persona (editable) — this controls how the bot answers. Keep it short and personal:</strong></label>
-    <textarea id="persona" rows="4">I am an analytical, empathetic AI-agent candidate who communicates clearly. I answer concisely (40–80 seconds spoken), use first person, give one short example, and finish with a growth/next step statement.</textarea>
-  </div>
+    <div class="grid">
+      <!-- left -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:700">Persona (editable)</div>
+            <div class="muted" style="margin-top:6px">Edit this to control the voice/tone of the answers. Keep short and first-person.</div>
+            <textarea id="persona" class="persona">I am an analytical, empathetic AI-agent candidate who communicates clearly. I answer concisely (40–80 seconds spoken), use first person, give one short example, and finish with a growth/next-step statement.</textarea>
+          </div>
 
-  <div class="panel row" style="justify-content:space-between;align-items:center">
-    <div style="display:flex;gap:10px;align-items:center">
-      <button id="mic">🎙 Start (voice)</button>
-      <button id="stop" class="secondary">Stop</button>
-      <span id="status" class="small">Idle</span>
+          <div style="width:150px;text-align:center">
+            <div class="muted">Speech supported:</div>
+            <div id="supported" style="margin-top:8px;font-weight:700">Checking…</div>
+          </div>
+        </div>
+
+        <hr style="border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(10,10,10,0.03),transparent);margin:18px 0">
+
+        <div class="controls">
+          <button id="mic" class="mic" aria-label="Start voice">🎙</button>
+          <div style="flex:1">
+            <div style="display:flex;gap:8px;align-items:center">
+              <input id="q" class="input" placeholder="Type your question or use the mic" />
+              <button id="send" class="btn">Send</button>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px;align-items:center">
+              <button id="stop" class="btn ghost">Stop</button>
+              <div id="status" class="status">Idle — click the mic to ask</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="response" class="response">No response yet — ask a question (try sample questions on the right).</div>
+      </div>
+
+      <!-- right sidebar -->
+      <aside class="card" style="height:100%;">
+        <div>
+          <div class="sideTitle">Sample questions</div>
+          <div class="samples" style="margin-top:8px">
+            <button class="sampleBtn">What should we know about your life story?</button>
+            <button class="sampleBtn">What's your #1 superpower?</button>
+            <button class="sampleBtn">Top 3 areas you'd like to grow in?</button>
+            <button class="sampleBtn">What misconception do coworkers have?</button>
+            <button class="sampleBtn">How do you push your boundaries?</button>
+          </div>
+
+          <div class="hint">Click any sample to auto-fill the question or type your own. Works best in Chrome (desktop or Android).</div>
+
+          <hr style="border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(10,10,10,0.03),transparent);margin:12px 0">
+
+          <div style="margin-top:6px">
+            <div style="font-weight:600">Helpful testing tips</div>
+            <ol style="padding-left:18px;margin:8px 0;color:var(--muted)">
+              <li>Open the page in Chrome, allow microphone when prompted.</li>
+              <li>Click the 🎙 button and ask a sample question aloud.</li>
+              <li>If mic fails, type and click Send.</li>
+            </ol>
+          </div>
+        </div>
+      </aside>
     </div>
-    <div style="text-align:right">
-      <div class="small">Speech supported: <span id="supported">checking...</span></div>
-    </div>
+
+    <footer>
+      <div class="credit">Created by — <a id="linkedin" href="https://www.linkedin.com/in/uma-sesha-sai-chinta-13baa4155/" target="_blank" rel="noopener noreferrer">Uma Sesha Sai Chinta</a></div>
+      <div class="muted">No servers • No API keys • Static client-side demo</div>
+    </footer>
   </div>
-
-  <div class="panel">
-    <label><strong>Type your question (fallback):</strong></label>
-    <div class="row" style="margin-top:8px">
-      <input id="q" placeholder="Type a question or use the mic" />
-      <button id="send">Send</button>
-    </div>
-
-    <div style="margin-top:10px" class="sample-q">
-      <div class="small">Sample questions (click):</div>
-      <button class="samp">What should we know about your life story?</button>
-      <button class="samp">What's your #1 superpower?</button>
-      <button class="samp">Top 3 areas you'd like to grow in?</button>
-      <button class="samp">What misconception do coworkers have about you?</button>
-      <button class="samp">How do you push your boundaries?</button>
-    </div>
-  </div>
-
-  <div class="panel">
-    <h3>Bot response (voice + text)</h3>
-    <div id="response" class="response">No response yet — ask a question.</div>
-  </div>
-
-  <div class="panel small">
-    <strong>Notes for reviewer:</strong>
-    <ul>
-      <li>Works in Chrome (desktop/Android). Allow mic permission when prompted.</li>
-      <li>If microphone unavailable, type your question and press Send.</li>
-      <li>Persona box controls answer style; edit to match your personal story.</li>
-    </ul>
-  </div>
-
-  <footer>
-    Deploy: this file can be hosted as a static site (GitHub Pages or Vercel) — no server or API keys required.
-  </footer>
 
 <script>
-/* --- Answer bank (polished, interviewer-ready). Edit these to personalize. --- */
+/* ====== Setup and canned answers ====== */
 const canned = {
   life: `I grew up curious about building things and understanding systems. After an early career in civil engineering, I moved into technology to focus on AI-driven products that help people make better decisions. I combine practical delivery experience with a product mindset and enjoy translating complex ideas into simple, usable features. I thrive when I can coach teams and turn user feedback into measurable improvements.`,
-
-  superpower: `My #1 superpower is structured problem decomposition — I take ambiguous, large problems and quickly break them into clear, testable pieces. For example, when launching a prediction feature, I split it into data validation, model validation, UX, and monitoring, which let us ship safely and iterate based on usage metrics. This makes me dependable in fast-moving teams.`,
-
-  grow: `Top 3 areas I want to grow in:\n1) Deep ML model design — I'm practicing building models end-to-end and reading research papers weekly.\n2) Product leadership — I want to lead cross-functional roadmaps and scale teams.\n3) Public speaking & storytelling — improving how I present technical work to non-technical stakeholders.\nI actively work on these through courses, small leadership projects, and presenting at team demos.`,
-
-  miscon: `A common misconception is that I prefer working alone because I'm highly focused. In reality, I value collaboration and I pair frequently — I just structure focused deep-work time so that when I collaborate, it's highly effective. I make time for asynchronous docs and quick syncs to keep the team aligned.`,
-
-  push: `I push my boundaries by running small, time-boxed stretch projects: pick a topic I don't know, build a tiny end-to-end prototype in 2–3 days, and demo it. For example, I learned basic MLOps by deploying a simple model with monitoring in a weekend; that taught me the key failure modes and how to instrument for them.`
+  superpower: `My #1 superpower is structured problem decomposition — I take ambiguous, large problems and quickly break them into clear, testable pieces. For example, when launching a prediction feature, I split it into data validation, model validation, UX, and monitoring, which let us ship safely and iterate based on usage metrics.`,
+  grow: `Top 3 areas I want to grow in:\n1) Deep ML model design — building end-to-end models and reading research papers.\n2) Product leadership — owning cross-functional roadmaps.\n3) Public speaking & storytelling — presenting technical work to non-technical audiences.`,
+  miscon: `A common misconception is that I prefer working alone because I'm focused. In reality, I value collaboration and I pair frequently — I just structure focused deep-work time to be highly productive during collaborations.`,
+  push: `I push my boundaries by running small, time-boxed stretch projects: pick something new, build a working prototype in 2–3 days, and demo it. A recent example: I built a proof-of-concept deployment and monitoring pipeline in a weekend, which taught me the key failure modes.`
 };
 
-/* --- fuzzy keyword matching to choose the right canned response --- */
-function chooseAnswer(q) {
-  const s = q.toLowerCase();
-  if (/life|story|about you|who are you|background/.test(s)) return canned.life;
-  if (/superpower|strength|best (skill|ability)|#1 superpower/.test(s)) return canned.superpower;
-  if (/top 3|areas you'd like to grow|grow in|improve|areas to grow/.test(s)) return canned.grow;
-  if (/misconception|coworkers|co-workers|what (do|would) .* think|people think/.test(s)) return canned.miscon;
-  if (/push.*boundary|push.*limit|push your boundaries|how do you push|limits/.test(s)) return canned.push;
-  // fallback: construct a neutral helpful answer structure
-  return `Thanks — I don't have a specific canned answer for that exact phrasing. Here's a concise, structured reply you can use:\n\n1) Short summary: I approach problems by clarifying goals and constraints.\n2) Example: I often prototype solutions, validate with users, and iterate.\n3) Growth: I continuously learn via projects and feedback.\n\n(If needed, rephrase or try one of the sample questions.)`;
-}
-
-/* --- speech setup --- */
-const supported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+/* ====== Speech support detection ====== */
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const supported = !!SpeechRecognition;
 document.getElementById('supported').innerText = supported ? 'Yes' : 'No';
 
-let recog = null;
+let recognition = null;
 if (supported) {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recog = new SR();
-  recog.lang = 'en-IN';
-  recog.interimResults = false;
-  recog.maxAlternatives = 1;
-}
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-IN';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
 
-/* UI elements */
-const micBtn = document.getElementById('mic');
-const stopBtn = document.getElementById('stop');
-const status = document.getElementById('status');
-const qInput = document.getElementById('q');
-const sendBtn = document.getElementById('send');
-const resp = document.getElementById('response');
-const personaBox = document.getElementById('persona');
-
-/* speech recognition handlers */
-if (recog) {
-  recog.onstart = () => status.innerText = 'Listening...';
-  recog.onend = () => status.innerText = 'Idle';
-  recog.onerror = (e) => {
-    console.warn('Recognition error', e);
-    status.innerText = 'Error: ' + (e.error || e.message || 'unknown');
-  };
-  recog.onresult = (ev) => {
-    const text = ev.results[0][0].transcript;
-    qInput.value = text;
-    status.innerText = 'Got text';
-    handleQuestion(text);
-  };
-}
-
-micBtn.onclick = () => {
-  if (!recog) return alert('SpeechRecognition not supported in this browser. Use Chrome desktop/Android.');
-  try {
-    qInput.value=''; resp.innerText = 'Listening...';
-    recog.start();
-  } catch (e) { console.error(e); }
-};
-stopBtn.onclick = () => { if(recog) recog.stop(); status.innerText='Stopped'; };
-
-/* sample question buttons */
-document.querySelectorAll('.samp').forEach(b => {
-  b.onclick = () => {
-    const t = b.innerText;
-    qInput.value = t;
+  recognition.onstart = () => { setStatus('Listening...'); micEl.classList.add('pulse'); };
+  recognition.onend = () => { setStatus('Idle'); micEl.classList.remove('pulse'); };
+  recognition.onerror = (e) => { setStatus('Error: ' + (e.error || e.message || 'unknown')); micEl.classList.remove('pulse'); };
+  recognition.onresult = (ev) => {
+    const t = ev.results[0][0].transcript;
+    qEl.value = t;
+    setStatus('Heard: "' + t + '"');
     handleQuestion(t);
   };
+}
+
+/* ====== UI references ====== */
+const micEl = document.getElementById('mic');
+const stopEl = document.getElementById('stop');
+const sendEl = document.getElementById('send');
+const qEl = document.getElementById('q');
+const responseEl = document.getElementById('response');
+const statusEl = document.getElementById('status');
+const personaEl = document.getElementById('persona');
+
+/* ====== Behavior ====== */
+micEl.addEventListener('click', () => {
+  if (!supported) return alert('SpeechRecognition not supported in this browser. Use Chrome on desktop/Android.');
+  try { qEl.value = ''; responseEl.innerText = 'Listening...'; recognition.start(); } catch(e) { console.warn(e); }
+});
+stopEl.addEventListener('click', () => { if (recognition) recognition.stop(); setStatus('Stopped'); });
+sendEl.addEventListener('click', () => handleQuestion(qEl.value.trim()));
+
+/* sample buttons */
+document.querySelectorAll('.sampleBtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    qEl.value = btn.innerText;
+    handleQuestion(btn.innerText);
+  });
 });
 
-/* send typed */
-sendBtn.onclick = () => handleQuestion(qInput.value.trim());
+/* set status */
+function setStatus(text){ statusEl.innerText = text; }
 
-/* main handler: choose answer, combine persona, speak it */
-function handleQuestion(q) {
-  if (!q) { alert('Please speak or type a question'); return; }
-  const persona = personaBox.value.trim();
-  const answer = chooseAnswer(q);
-  const final = assembleVoiceReply(persona, q, answer);
-  showAndSpeak(final);
+/* choose answer based on question keywords */
+function chooseAnswer(q) {
+  if (!q) return "Please ask a question or click a sample question.";
+  const s = q.toLowerCase();
+  if (/life|story|background|who are you/.test(s)) return canned.life;
+  if (/superpower|strength|best skill|#1 superpower/.test(s)) return canned.superpower;
+  if (/top 3|areas you'd like to grow|grow in|improve|areas to grow/.test(s)) return canned.grow;
+  if (/misconception|coworkers|co-workers|people think|what do people think/.test(s)) return canned.miscon;
+  if (/push.*boundary|push.*limit|push your boundaries|how do you push|limits/.test(s)) return canned.push;
+  // fallback: structured helpful reply
+  return `Thanks — here's a concise structured reply:\n\n1) Short summary: I clarify the goal and constraints.\n2) Example: I prototype and validate quickly with users.\n3) Growth: I iterate based on feedback and metrics.\n\nTry a sample question or edit the Persona box for a personalized tone.`;
 }
 
-/* assemble: gives a consistent spoken-style reply that uses persona */
-function assembleVoiceReply(persona, question, answer) {
-  // short header using persona rules - kept simple so it's natural
-  return `${answer}\n\n(Answer style: ${persona})`;
+/* assemble final voice reply and display */
+function assemble(persona, question, answer) {
+  // Slightly personalize by prefixing persona hint (keeps it natural)
+  const p = persona ? persona.replace(/\n/g,' ').trim() : '';
+  const header = p ? `(${p})\n\n` : '';
+  return header + answer;
 }
 
-/* display and speak */
-function showAndSpeak(text) {
-  resp.innerText = text;
+/* speak text */
+function speak(text) {
   try {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US';
-      u.rate = 1.0;
-      window.speechSynthesis.speak(u);
-    }
-  } catch (e) { console.warn('SpeechSynthesis failed', e); }
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 1.0;
+    window.speechSynthesis.speak(u);
+  } catch (e) { console.warn('TTS failed', e); }
 }
+
+/* main handler */
+function handleQuestion(rawQ) {
+  const q = (rawQ || '').trim();
+  if (!q) { alert('Please speak or type a question.'); return; }
+  setStatus('Processing...');
+  const persona = personaEl.value || '';
+  const ans = chooseAnswer(q);
+  const final = assemble(persona, q, ans);
+  responseEl.innerText = final;
+  speak(final);
+  setStatus('Answered');
+}
+
+/* accessibility: allow Enter in text input to send */
+qEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); handleQuestion(qEl.value.trim()); } });
+
+/* set initial state */
+setStatus('Idle');
 </script>
 </body>
 </html>
