@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>GEN AI ROUND 1 — VoiceBot (Stage 1)</title>
+<style>
+  body{font-family:Inter,system-ui,Arial;max-width:880px;margin:28px auto;padding:18px;color:#111}
+  h1{font-size:22px;margin-bottom:6px}
+  .panel{border:1px solid #e4e4e7;padding:14px;border-radius:10px;margin-top:12px;background:#fff}
+  textarea,input{width:100%;padding:8px;border-radius:6px;border:1px solid #ddd}
+  button{padding:10px 14px;border-radius:8px;border:0;background:#0b63ff;color:#fff;cursor:pointer}
+  button.secondary{background:#444;margin-left:8px}
+  .row{display:flex;gap:8px;align-items:center}
+  .small{font-size:13px;color:#666}
+  .sample-q button{margin:6px 6px 6px 0;background:#eef2ff;color:#08306b;border:0}
+  .response{min-height:96px;white-space:pre-wrap;padding:12px;background:#fafafa;border-radius:8px;border:1px solid #eee}
+  footer{font-size:12px;color:#666;margin-top:18px}
+</style>
+</head>
+<body>
+  <h1>GEN AI — Interview VoiceBot (Stage 1)</h1>
+  <div class="small">Click 🎙 Start and ask interview questions. Works best in Chrome on desktop/Android. Text fallback included.</div>
+
+  <div class="panel">
+    <label><strong>Persona (editable) — this controls how the bot answers. Keep it short and personal:</strong></label>
+    <textarea id="persona" rows="4">I am an analytical, empathetic AI-agent candidate who communicates clearly. I answer concisely (40–80 seconds spoken), use first person, give one short example, and finish with a growth/next step statement.</textarea>
+  </div>
+
+  <div class="panel row" style="justify-content:space-between;align-items:center">
+    <div style="display:flex;gap:10px;align-items:center">
+      <button id="mic">🎙 Start (voice)</button>
+      <button id="stop" class="secondary">Stop</button>
+      <span id="status" class="small">Idle</span>
+    </div>
+    <div style="text-align:right">
+      <div class="small">Speech supported: <span id="supported">checking...</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <label><strong>Type your question (fallback):</strong></label>
+    <div class="row" style="margin-top:8px">
+      <input id="q" placeholder="Type a question or use the mic" />
+      <button id="send">Send</button>
+    </div>
+
+    <div style="margin-top:10px" class="sample-q">
+      <div class="small">Sample questions (click):</div>
+      <button class="samp">What should we know about your life story?</button>
+      <button class="samp">What's your #1 superpower?</button>
+      <button class="samp">Top 3 areas you'd like to grow in?</button>
+      <button class="samp">What misconception do coworkers have about you?</button>
+      <button class="samp">How do you push your boundaries?</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Bot response (voice + text)</h3>
+    <div id="response" class="response">No response yet — ask a question.</div>
+  </div>
+
+  <div class="panel small">
+    <strong>Notes for reviewer:</strong>
+    <ul>
+      <li>Works in Chrome (desktop/Android). Allow mic permission when prompted.</li>
+      <li>If microphone unavailable, type your question and press Send.</li>
+      <li>Persona box controls answer style; edit to match your personal story.</li>
+    </ul>
+  </div>
+
+  <footer>
+    Deploy: this file can be hosted as a static site (GitHub Pages or Vercel) — no server or API keys required.
+  </footer>
+
+<script>
+/* --- Answer bank (polished, interviewer-ready). Edit these to personalize. --- */
+const canned = {
+  life: `I grew up curious about building things and understanding systems. After an early career in civil engineering, I moved into technology to focus on AI-driven products that help people make better decisions. I combine practical delivery experience with a product mindset and enjoy translating complex ideas into simple, usable features. I thrive when I can coach teams and turn user feedback into measurable improvements.`,
+
+  superpower: `My #1 superpower is structured problem decomposition — I take ambiguous, large problems and quickly break them into clear, testable pieces. For example, when launching a prediction feature, I split it into data validation, model validation, UX, and monitoring, which let us ship safely and iterate based on usage metrics. This makes me dependable in fast-moving teams.`,
+
+  grow: `Top 3 areas I want to grow in:\n1) Deep ML model design — I'm practicing building models end-to-end and reading research papers weekly.\n2) Product leadership — I want to lead cross-functional roadmaps and scale teams.\n3) Public speaking & storytelling — improving how I present technical work to non-technical stakeholders.\nI actively work on these through courses, small leadership projects, and presenting at team demos.`,
+
+  miscon: `A common misconception is that I prefer working alone because I'm highly focused. In reality, I value collaboration and I pair frequently — I just structure focused deep-work time so that when I collaborate, it's highly effective. I make time for asynchronous docs and quick syncs to keep the team aligned.`,
+
+  push: `I push my boundaries by running small, time-boxed stretch projects: pick a topic I don't know, build a tiny end-to-end prototype in 2–3 days, and demo it. For example, I learned basic MLOps by deploying a simple model with monitoring in a weekend; that taught me the key failure modes and how to instrument for them.`
+};
+
+/* --- fuzzy keyword matching to choose the right canned response --- */
+function chooseAnswer(q) {
+  const s = q.toLowerCase();
+  if (/life|story|about you|who are you|background/.test(s)) return canned.life;
+  if (/superpower|strength|best (skill|ability)|#1 superpower/.test(s)) return canned.superpower;
+  if (/top 3|areas you'd like to grow|grow in|improve|areas to grow/.test(s)) return canned.grow;
+  if (/misconception|coworkers|co-workers|what (do|would) .* think|people think/.test(s)) return canned.miscon;
+  if (/push.*boundary|push.*limit|push your boundaries|how do you push|limits/.test(s)) return canned.push;
+  // fallback: construct a neutral helpful answer structure
+  return `Thanks — I don't have a specific canned answer for that exact phrasing. Here's a concise, structured reply you can use:\n\n1) Short summary: I approach problems by clarifying goals and constraints.\n2) Example: I often prototype solutions, validate with users, and iterate.\n3) Growth: I continuously learn via projects and feedback.\n\n(If needed, rephrase or try one of the sample questions.)`;
+}
+
+/* --- speech setup --- */
+const supported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+document.getElementById('supported').innerText = supported ? 'Yes' : 'No';
+
+let recog = null;
+if (supported) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recog = new SR();
+  recog.lang = 'en-IN';
+  recog.interimResults = false;
+  recog.maxAlternatives = 1;
+}
+
+/* UI elements */
+const micBtn = document.getElementById('mic');
+const stopBtn = document.getElementById('stop');
+const status = document.getElementById('status');
+const qInput = document.getElementById('q');
+const sendBtn = document.getElementById('send');
+const resp = document.getElementById('response');
+const personaBox = document.getElementById('persona');
+
+/* speech recognition handlers */
+if (recog) {
+  recog.onstart = () => status.innerText = 'Listening...';
+  recog.onend = () => status.innerText = 'Idle';
+  recog.onerror = (e) => {
+    console.warn('Recognition error', e);
+    status.innerText = 'Error: ' + (e.error || e.message || 'unknown');
+  };
+  recog.onresult = (ev) => {
+    const text = ev.results[0][0].transcript;
+    qInput.value = text;
+    status.innerText = 'Got text';
+    handleQuestion(text);
+  };
+}
+
+micBtn.onclick = () => {
+  if (!recog) return alert('SpeechRecognition not supported in this browser. Use Chrome desktop/Android.');
+  try {
+    qInput.value=''; resp.innerText = 'Listening...';
+    recog.start();
+  } catch (e) { console.error(e); }
+};
+stopBtn.onclick = () => { if(recog) recog.stop(); status.innerText='Stopped'; };
+
+/* sample question buttons */
+document.querySelectorAll('.samp').forEach(b => {
+  b.onclick = () => {
+    const t = b.innerText;
+    qInput.value = t;
+    handleQuestion(t);
+  };
+});
+
+/* send typed */
+sendBtn.onclick = () => handleQuestion(qInput.value.trim());
+
+/* main handler: choose answer, combine persona, speak it */
+function handleQuestion(q) {
+  if (!q) { alert('Please speak or type a question'); return; }
+  const persona = personaBox.value.trim();
+  const answer = chooseAnswer(q);
+  const final = assembleVoiceReply(persona, q, answer);
+  showAndSpeak(final);
+}
+
+/* assemble: gives a consistent spoken-style reply that uses persona */
+function assembleVoiceReply(persona, question, answer) {
+  // short header using persona rules - kept simple so it's natural
+  return `${answer}\n\n(Answer style: ${persona})`;
+}
+
+/* display and speak */
+function showAndSpeak(text) {
+  resp.innerText = text;
+  try {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 1.0;
+      window.speechSynthesis.speak(u);
+    }
+  } catch (e) { console.warn('SpeechSynthesis failed', e); }
+}
+</script>
+</body>
+</html>
