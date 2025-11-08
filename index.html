@@ -1,0 +1,86 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>GEN AI VoiceBot (Stage 1)  CHINTA UMA SESHA SAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3fbf6;--card:#ffffff;--muted:#4b5563;--accent:#0f9d58;--accent-dark:#0a7f44;}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#f7fff8 0%,var(--bg) 100%);color:#0f1724;font-family:"Nunito Sans",system-ui,sans-serif;display:flex;justify-content:center;padding:28px 16px;}
+.wrap{width:100%;max-width:950px;}
+header{text-align:center;margin-bottom:16px}
+header h1{margin:0;font-size:24px;font-weight:800;color:#063f2d;letter-spacing:0.5px;}
+header p{font-size:15px;font-weight:600;color:var(--accent-dark);margin:2px 0 10px;}
+header span{font-size:13px;color:var(--muted);}
+.grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px;}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 4px 20px rgba(15,23,42,0.06);}
+.persona{width:100%;padding:12px;border-radius:10px;border:1px dashed rgba(10,10,10,0.05);font-size:14px;resize:vertical;min-height:86px;}
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.mic{width:72px;height:72px;border-radius:50%;background:linear-gradient(180deg,var(--accent),var(--accent-dark));color:#fff;font-size:26px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:transform .2s,box-shadow .3s;}
+.mic:hover{box-shadow:0 0 25px rgba(15,157,88,0.35);transform:scale(1.08);}
+.mic .wave{position:absolute;border:2px solid rgba(15,157,88,0.4);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);opacity:0;animation:none;}
+@keyframes micWaves{0%{transform:translate(-50%,-50%) scale(0.8);opacity:.9;}50%{transform:translate(-50%,-50%) scale(1.3);opacity:.5;}100%{transform:translate(-50%,-50%) scale(1.8);opacity:0;}}
+.mic.listening .wave{animation:micWaves 1.3s infinite ease-out;}
+.btn{padding:10px 16px;border-radius:10px;border:0;background:var(--accent);color:#fff;cursor:pointer;font-weight:700;}
+.btn.ghost{background:transparent;border:1px solid rgba(15,157,88,0.25);color:var(--accent);}
+.input{flex:1;padding:10px;border-radius:10px;border:1px solid #e6eee7;background:#f9fff9;font-size:14px;}
+.status{font-size:13px;color:var(--muted);}
+.response{margin-top:14px;padding:14px;border-radius:10px;background:#f8fff9;min-height:120px;border:1px solid rgba(10,10,10,0.03);white-space:pre-wrap;font-size:15px;color:#063f2d;}
+.sampleBtn{background:transparent;border:1px solid rgba(10,10,10,0.06);padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--accent);}
+.sampleBtn:hover{background:#e9f7ee;}
+footer{text-align:center;margin-top:22px;color:var(--muted);font-size:13px;}
+footer a{color:var(--accent);font-weight:600;text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>CHINTA UMA SESHA SAI</h1>
+  <p>GEN AI DEV / Prompt Engineer</p>
+  <span>Stage 1 Assessment  AI Agent Team VoiceBot Demo</span>
+</header>
+<div class="grid">
+<div class="card">
+  <div style="font-size:14px;font-weight:700">CHINTA UMA SESHA SAI</div>
+  <div class="muted" style="font-size:13px;margin-top:6px">GEN AI DEV / Prompt Engineer</div>
+  <textarea id="persona" class="persona">I am Uma Sesha Sai Chinta, an AI Engineer who blends technical precision with creative problem-solving. I speak clearly, stay concise, and respond like a confident professional who loves innovation and learning.</textarea>
+  <hr style="border:none;height:1px;background:rgba(10,10,10,0.06);margin:18px 0">
+  <div class="controls">
+    <button id="mic" class="mic" title="Start voice"><div class="wave"></div></button>
+    <div style="flex:1">
+      <div style="display:flex;gap:8px;align-items:center">
+        <input id="q" class="input" placeholder="Type your question or use the mic">
+        <button id="send" class="btn">Send</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px;align-items:center">
+        <button id="stop" class="btn ghost">Stop</button>
+        <div id="status" class="status">Idle</div>
+      </div>
+    </div>
+  </div>
+  <div id="response" class="response">No response yet  ask a question (try the samples on the right).</div>
+</div>
+<aside class="card">
+  <div style="font-weight:700;margin-bottom:6px;">Sample questions</div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <button class="sampleBtn">What should we know about your life story?</button>
+    <button class="sampleBtn">What's your #1 superpower?</button>
+    <button class="sampleBtn">Top 3 areas you'd like to grow in?</button>
+    <button class="sampleBtn">What misconception do coworkers have?</button>
+    <button class="sampleBtn">How do you push your boundaries?</button>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:10px;">Best tested on Chrome (desktop or Android).</p>
+</aside>
+</div>
+<footer>
+Created by  <a href="https://www.linkedin.com/in/uma-sesha-sai-chinta-13baa4155/" target="_blank">Uma Sesha Sai Chinta</a><br>
+No servers  No API keys  Static client-side demo
+</footer>
+</div>
+<script>
+const canned={life:`I began my journey in civil engineering, but my curiosity for automation and intelligent systems led me to transition into AI and cloud engineering. Over the past few years at Accenture, I've designed and deployed enterprise-grade AI agents, built RAG pipelines, and automated MLOps workflows across Azure and GCP. This mix of engineering fundamentals and real-world AI deployment shaped me into someone who thrives on solving complex problems with practical innovation.`,superpower:`My biggest superpower is connecting deep technical understanding with fast execution. I can take a complex AI conceptlike embeddings, model fine-tuning, or RAG pipelinesand translate it into a working production system quickly. For example, one of my AI agents improved response accuracy by 85% within two iterations by optimizing prompts and embeddings. I combine structured thinking with a maker mindset.`,grow:`The top 3 areas I'm currently focusing on are:\n1) Research-driven AI development  understanding transformer architectures beyond APIs and experimenting with synthetic data for domain adaptation.\n2) Leadership and mentoring  guiding others to build reliable AI workflows.\n3) Product storytelling  communicating technical impact clearly to non-technical stakeholders. I believe growth means combining technical excellence with communication and vision.`,miscon:`People sometimes assume I'm entirely technical and prefer working solo because of my focus on automation and systems. In reality, collaboration is my strength  I've worked closely with cloud, data, and DevOps teams, and I enjoy turning complex requests into clear, documented workflows. I'm structured, not silent  I just believe clarity comes from precision, not volume.`,push:`I push my boundaries by deliberately taking on high-stakes challenges outside my comfort zone. For instance, I once built a fully functional Azure OpenAI Copilot integration over a weekend to prove a concept that later became part of an enterprise demo. I love building quickly, learning through feedback, and converting ideas into measurable outcomes  that's how I grow with every project.`};const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;const supported=!!SpeechRecognition;let recognition=null;if(supported){recognition=new SpeechRecognition();recognition.lang='en-IN';recognition.interimResults=false;recognition.onstart=()=>{setStatus('Listening...');mic.classList.add('listening');};recognition.onend=()=>{setStatus('Idle');mic.classList.remove('listening');};recognition.onerror=e=>{setStatus('Error: '+(e.error||e.message));mic.classList.remove('listening');};recognition.onresult=ev=>{const t=ev.results[0][0].transcript;q.value=t;setStatus('Heard: "'+t+'"');handleQuestion(t);};}const mic=document.getElementById('mic'),stop=document.getElementById('stop'),send=document.getElementById('send'),q=document.getElementById('q'),response=document.getElementById('response'),status=document.getElementById('status'),persona=document.getElementById('persona');mic.onclick=()=>{if(!supported)return alert('Use Chrome for speech');try{q.value='';response.innerText='Listening...';recognition.start();}catch(e){}};stop.onclick=()=>{if(recognition)recognition.stop();setStatus('Stopped');};send.onclick=()=>handleQuestion(q.value.trim());document.querySelectorAll('.sampleBtn').forEach(b=>b.onclick=()=>{q.value=b.innerText;handleQuestion(b.innerText);});q.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();handleQuestion(q.value.trim());}};function setStatus(t){status.innerText=t;}function chooseAnswer(qtxt){const s=qtxt.toLowerCase();if(/life|story|background/.test(s))return canned.life;if(/superpower|strength/.test(s))return canned.superpower;if(/top 3|grow|improve/.test(s))return canned.grow;if(/misconception|coworkers|people think/.test(s))return canned.miscon;if(/push|limit|boundary/.test(s))return canned.push;return "Thanks  here's a short structured reply: clarify goal, give example, finish with growth insight.";}function handleQuestion(raw){const qv=(raw||'').trim();if(!qv)return alert('Please ask a question.');setStatus('Processing...');const ans=chooseAnswer(qv);const final=assemble(persona.value,ans);response.innerText=final;speak(final);setStatus('Answered');}function assemble(p,a){return(p?'('+p+')\n\n':'')+a;}function speak(t){if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=1;window.speechSynthesis.speak(u);}setStatus('Idle');</script>
+</body>
+</html>
