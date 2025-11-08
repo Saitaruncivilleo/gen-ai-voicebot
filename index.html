@@ -30,6 +30,7 @@
     display:flex;
     justify-content:center;
     padding:28px 16px;
+      font-family: 'Plus Jakarta Sans', system-ui, Arial;
   }
   .wrap{
     width:100%;
@@ -150,8 +151,13 @@
               <button id="send" class="btn">Send</button>
             </div>
             <div style="display:flex;gap:10px;margin-top:8px;align-items:center">
-              <button id="stop" class="btn ghost">Stop</button>
-              <div id="status" class="status">Idle — click the mic to ask</div>
+                <button id="stop" class="btn ghost" title="Stop">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="6" y="6" width="12" height="12" rx="2" stroke="#08306b" stroke-width="1.5" fill="none"/>
+                  </svg>
+                  Stop
+                </button>
+                <div id="status" class="status">Idle</div>
             </div>
           </div>
         </div>
