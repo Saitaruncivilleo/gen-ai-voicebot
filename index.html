@@ -3,181 +3,470 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>GEN AI VoiceBot (Stage 1) - CHINTA UMA SESHA SAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<title>GEN AI VoiceBot - CHINTA UMA SESHA SAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f3fbf6;
-  --card:#ffffff;
-  --muted:#4b5563;
-  --accent:#0f9d58;
-  --accent-dark:#0a7f44;
+  --bg-1: #f7fff8;
+  --bg-2: #eaf9ef;
+  --card: rgba(255,255,255,0.9);
+  --glass: rgba(255,255,255,0.6);
+  --muted: #51606a;
+  --accent: #0f9d58;
+  --accent-2: #0a7f44;
+  --shadow: 0 10px 40px rgba(7, 43, 20, 0.06);
+  --radius: 16px;
+  --maxw: 1100px;
 }
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  background:linear-gradient(180deg,#f7fff8 0%,var(--bg) 100%);
-  color:#0f1724;
-  font-family:'Nunito Sans',system-ui,sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: radial-gradient(800px 400px at 10% 10%, rgba(15,157,88,0.04), transparent),
+              radial-gradient(700px 350px at 90% 90%, rgba(10,127,68,0.03), transparent),
+              linear-gradient(180deg,var(--bg-1),var(--bg-2));
+  color:#05221a;
   display:flex;
   justify-content:center;
-  padding:28px 16px;
+  align-items:flex-start;
+  padding:36px 20px;
 }
-.wrap{width:100%;max-width:950px;}
-header{text-align:center;margin-bottom:16px}
-header h1{margin:0;font-size:24px;font-weight:800;color:#063f2d;letter-spacing:0.5px;}
-header p{font-size:15px;font-weight:600;color:var(--accent-dark);margin:2px 0 10px;}
-header span{font-size:13px;color:var(--muted);}
 
-.grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px;}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
-
-.card{background:var(--card);border-radius:14px;padding:18px;box-shadow:0 4px 20px rgba(15,23,42,0.06);}
-.persona{width:100%;padding:12px;border-radius:10px;border:1px dashed rgba(10,10,10,0.05);font-size:14px;resize:vertical;min-height:86px;}
-
-.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
-.mic{
-  width:72px;height:72px;border-radius:50%;
-  background:linear-gradient(180deg,var(--accent),var(--accent-dark));
-  color:#fff;font-size:26px;border:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;overflow:hidden;
-  transition:transform .2s,box-shadow .3s;
+/* container */
+.container{
+  width:100%;
+  max-width:var(--maxw);
+  display:grid;
+  grid-template-columns: 1fr 420px;
+  gap:22px;
+  align-items:start;
+  animation:flyIn .7s ease-out;
 }
-.mic:hover{box-shadow:0 0 25px rgba(15,157,88,0.35);transform:scale(1.08);}
-.mic .wave{
-  position:absolute;border:2px solid rgba(15,157,88,0.4);
-  border-radius:50%;top:50%;left:50%;
-  transform:translate(-50%,-50%) scale(0);
-  opacity:0;animation:none;
-}
-@keyframes micWaves{
-  0%{transform:translate(-50%,-50%) scale(0.8);opacity:.9;}
-  50%{transform:translate(-50%,-50%) scale(1.3);opacity:.5;}
-  100%{transform:translate(-50%,-50%) scale(1.8);opacity:0;}
-}
-.mic.listening .wave{animation:micWaves 1.3s infinite ease-out;}
+@media (max-width:980px){ .container{grid-template-columns:1fr;padding-bottom:30px} }
 
-.btn{padding:10px 16px;border-radius:10px;border:0;background:var(--accent);color:#fff;cursor:pointer;font-weight:700;}
-.btn.ghost{background:transparent;border:1px solid rgba(15,157,88,0.25);color:var(--accent);}
-.input{flex:1;padding:10px;border-radius:10px;border:1px solid #e6eee7;background:#f9fff9;font-size:14px;}
-.status{font-size:13px;color:var(--muted);}
-.response{margin-top:14px;padding:14px;border-radius:10px;background:#f8fff9;min-height:120px;border:1px solid rgba(10,10,10,0.03);white-space:pre-wrap;font-size:15px;color:#063f2d;}
-.sampleBtn{background:transparent;border:1px solid rgba(10,10,10,0.06);padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--accent);}
-.sampleBtn:hover{background:#e9f7ee;}
-footer{text-align:center;margin-top:22px;color:var(--muted);font-size:13px;}
-footer a{color:var(--accent);font-weight:600;text-decoration:none;}
+@keyframes flyIn{ from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+
+/* header */
+.header{
+  grid-column: 1 / -1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:6px;
+}
+.brand {
+  display:flex;flex-direction:column;
+}
+.brand h1{margin:0;font-size:20px;font-weight:800;letter-spacing:0.2px;color:#083d2a}
+.brand p{margin:4px 0 0;font-size:13px;color:var(--muted);font-weight:600}
+.badge{font-size:12px;color:var(--muted);background:linear-gradient(90deg, rgba(15,157,88,0.08), transparent);padding:6px 10px;border-radius:10px;font-weight:700;display:inline-flex;align-items:center;gap:8px}
+
+/* main card */
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(7,43,20,0.04);
+  min-height:360px;
+}
+.personaHeader{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.titleMain{font-weight:700;color:#0b3f2d;font-size:15px}
+.subtitle{font-size:12px;color:var(--muted)}
+
+/* persona textarea */
+.persona{width:100%;margin-top:12px;padding:12px;border-radius:12px;border:1px dashed rgba(10,10,10,0.04);background:linear-gradient(180deg,#fff,#f8fff9);font-size:14px;min-height:86px;resize:vertical}
+
+/* controls row */
+.controls{display:flex;gap:14px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.micWrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.micButton{
+  width:86px;height:86px;border-radius:50%;border:0;cursor:pointer;
+  background:linear-gradient(180deg,var(--accent),var(--accent-2));
+  color:white;font-size:28px;display:grid;place-items:center;
+  box-shadow:0 12px 30px rgba(15,157,88,0.14);transition:transform .15s,box-shadow .15s;
+  position:relative;overflow:visible;
+}
+.micButton:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(15,157,88,0.18)}
+.micButton.listening{animation:micBounce 1.4s infinite}
+@keyframes micBounce{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+
+/* visualizer canvas */
+.meter{width:140px;height:46px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.01));display:flex;align-items:center;justify-content:center;padding:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+.meter canvas{width:100%;height:100%;display:block;border-radius:8px}
+
+/* input row */
+.inputRow{display:flex;gap:10px;align-items:center;width:100%}
+.input{flex:1;padding:12px;border-radius:12px;border:1px solid rgba(7,43,20,0.04);background:rgba(248,255,249,0.9);font-size:14px}
+.btn{padding:10px 14px;border-radius:10px;border:0;background:var(--accent);color:white;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid rgba(15,157,88,0.12);color:var(--accent)}
+
+/* response area */
+.response{
+  margin-top:14px;padding:14px;border-radius:12px;background:linear-gradient(180deg,#fff,#f8fff9);
+  border:1px solid rgba(7,43,20,0.02);min-height:160px;font-size:15px;color:#073b2c;white-space:pre-wrap;
+  position:relative;
+}
+.response .controlsSmall{position:absolute;right:12px;top:12px;display:flex;gap:8px}
+.smallBtn{background:transparent;border:1px solid rgba(7,43,20,0.04);padding:6px 8px;border-radius:8px;font-size:12px;cursor:pointer}
+
+/* sidebar */
+.sidebar{position:sticky;top:28px;height:max-content}
+.sideCard{background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.92));border-radius:14px;padding:18px;box-shadow:var(--shadow);border:1px solid rgba(7,43,20,0.03)}
+.sideCard h3{margin:0;font-size:14px;color:#083d2d;font-weight:700}
+.samples{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.sampleBtn{background:transparent;border:1px solid rgba(7,43,20,0.04);padding:10px;border-radius:10px;cursor:pointer;color:var(--accent);font-weight:700;text-align:left}
+.hint{font-size:13px;color:var(--muted);margin-top:10px}
+
+/* voice controls */
+.voiceRow{display:flex;gap:8px;align-items:center;margin-top:10px}
+.select{padding:8px;border-radius:8px;border:1px solid rgba(7,43,20,0.04);background:#fff;font-weight:600}
+
+/* footer */
+.footer{grid-column:1 / -1;margin-top:10px;text-align:center;color:var(--muted);font-size:13px}
+.contactLine{font-size:12px;color:var(--muted);margin-top:6px}
+.contactLine a{color:var(--accent);font-weight:700;text-decoration:none}
+
+/* responsive tweaks */
+@media (max-width:640px){
+  .micButton{width:68px;height:68px;font-size:22px}
+  .container{padding:8px}
+  .sidebar{position:relative;top:0}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-  <h1>CHINTA UMA SESHA SAI</h1>
-  <p>GEN AI DEV / Prompt Engineer</p>
-  <span>Stage 1 Assessment - AI Agent Team VoiceBot Demo</span>
-</header>
+<div class="container" role="main" aria-label="VoiceBot demo">
+  <div class="header">
+    <div class="brand">
+      <h1>CHINTA UMA SESHA SAI</h1>
+      <p>GEN AI DEV / Prompt Engineer</p>
+    </div>
+    <div class="badge">Stage 1 - VoiceBot Demo</div>
+  </div>
 
-<div class="grid">
-<div class="card">
-  <!-- replaced "Persona (editable)" with personal header -->
-  <div style="font-size:14px;font-weight:700">CHINTA UMA SESHA SAI</div>
-  <div class="muted" style="font-size:13px;margin-top:6px">GEN AI DEV / Prompt Engineer</div>
-
-  <textarea id="persona" class="persona">I’m Uma Sesha Sai Chinta, an AI Engineer who blends technical precision with creative problem-solving. I speak clearly, stay concise, and respond like a confident professional who loves innovation and learning.</textarea>
-
-  <hr style="border:none;height:1px;background:rgba(10,10,10,0.06);margin:18px 0">
-
-  <div class="controls">
-    <button id="mic" class="mic" title="Start voice">🎙<div class="wave"></div></button>
-    <div style="flex:1">
-      <div style="display:flex;gap:8px;align-items:center">
-        <input id="q" class="input" placeholder="Type your question or use the mic">
-        <button id="send" class="btn">Send</button>
+  <!-- left: main -->
+  <main class="card" aria-label="VoiceBot Card">
+    <div class="personaHeader">
+      <div>
+        <div class="titleMain">Interactive VoiceBot - persona editable</div>
+        <div class="subtitle">Edit the persona to tune tone. Answers speak and type out.</div>
       </div>
-      <div style="display:flex;gap:10px;margin-top:8px;align-items:center">
-        <button id="stop" class="btn ghost">Stop</button>
-        <div id="status" class="status">Idle</div>
+      <div style="text-align:right;font-size:12px;color:var(--muted)">No servers · No API keys</div>
+    </div>
+
+    <textarea id="persona" class="persona" aria-label="Persona">
+I’m Uma Sesha Sai Chinta - an analytical, delivery-focused AI engineer who builds practical AI agents and RAG solutions. I answer succinctly, with one example and a next-step.
+    </textarea>
+
+    <div class="controls" aria-hidden="false">
+      <div class="micWrap" style="min-width:160px">
+        <button id="mic" class="micButton" aria-pressed="false" title="Start voice">🎙</button>
+        <div class="meter" title="Microphone level" aria-hidden="true">
+          <canvas id="meterCanvas" width="140" height="46"></canvas>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:220px">
+        <div class="inputRow">
+          <input id="q" class="input" placeholder="Type your question or use the mic" aria-label="Question input">
+          <button id="send" class="btn" title="Send question">Send</button>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:10px;align-items:center;justify-content:space-between">
+          <div style="display:flex;gap:10px;align-items:center">
+            <button id="stop" class="btn ghost" title="Stop audio">Stop</button>
+            <div id="status" style="font-size:13px;color:var(--muted)">Idle</div>
+          </div>
+
+          <div style="display:flex;gap:8px;align-items:center">
+            <button id="copyResp" class="smallBtn" title="Copy response">Copy</button>
+            <button id="download" class="smallBtn" title="Download transcript">Save</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div id="response" class="response">No response yet - ask a question (try the samples quetions on the right).</div>
-</div>
 
-<aside class="card">
-  <div style="font-weight:700;margin-bottom:6px;">Sample questions</div>
-  <div style="display:flex;flex-direction:column;gap:8px;">
-    <button class="sampleBtn">What should we know about your life story?</button>
-    <button class="sampleBtn">What's your #1 superpower?</button>
-    <button class="sampleBtn">Top 3 areas you'd like to grow in?</button>
-    <button class="sampleBtn">What misconception do coworkers have?</button>
-    <button class="sampleBtn">How do you push your boundaries?</button>
-  </div>
-  <p style="font-size:13px;color:var(--muted);margin-top:10px;">Best tested on Chrome (desktop or Android).</p>
-</aside>
-</div>
+    <div id="response" class="response" role="region" aria-live="polite">
+      No response yet - try a sample question on the right.
+      <div class="controlsSmall" aria-hidden="true">
+        <button id="playAgain" class="smallBtn" title="Replay last answer">Replay</button>
+      </div>
+    </div>
+  </main>
 
-<footer>
-Created by - <a href="https://www.linkedin.com/in/uma-sesha-sai-chinta-13baa4155/" target="_blank">Uma Sesha Sai Chinta</a><br>
-No servers • No API keys • Static client-side demo
-</footer>
+  <!-- right: sidebar -->
+  <aside class="sidebar">
+    <div class="sideCard">
+      <h3>Sample questions</h3>
+      <div class="samples" role="list">
+        <button class="sampleBtn">What should we know about your life story?</button>
+        <button class="sampleBtn">What's your #1 superpower?</button>
+        <button class="sampleBtn">Top 3 areas you'd like to grow in?</button>
+        <button class="sampleBtn">What misconception do coworkers have?</button>
+        <button class="sampleBtn">How do you push your boundaries?</button>
+      </div>
+
+      <div class="hint">Best tested in Chrome (desktop or Android). Allow microphone when prompted.</div>
+
+      <div class="voiceRow">
+        <label for="voiceSelect" style="font-size:13px;color:var(--muted);margin-right:6px">Voice</label>
+        <select id="voiceSelect" class="select" aria-label="Voice selection">
+          <option value="male" selected>Male (preferred)</option>
+          <option value="female">Female</option>
+          <option value="default">System default</option>
+        </select>
+      </div>
+
+      <div class="contactLine" style="margin-top:12px">
+        <span style="font-weight:700;color:#0b3f2d;margin-right:8px">Contact</span>
+        <a href="mailto:Sai38847@gmail.com">Sai38847@gmail.com</a> ·
+        <a href="tel:+918074702273">+91 80747 02273</a> ·
+        <a href="https://www.linkedin.com/in/uma-sesha-sai-chinta-13baa4155/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="footer">Created by - <strong>CHINTA UMA SESHA SAI</strong> · GEN AI DEV / Prompt Engineer</div>
 </div>
 
 <script>
-const canned={
-  life:`I began my journey in civil engineering, but my curiosity for automation and intelligent systems led me to transition into AI and cloud engineering. Over the past few years at Accenture, I’ve designed and deployed enterprise-grade AI agents, built RAG pipelines, and automated MLOps workflows across Azure and GCP. This mix of engineering fundamentals and real-world AI deployment shaped me into someone who thrives on solving complex problems with practical innovation.`,
-  superpower:`My biggest superpower is connecting deep technical understanding with fast execution. I can take a complex AI concept-like embeddings, model fine-tuning, or RAG pipelines-and translate it into a working production system quickly. For example, one of my AI agents improved response accuracy by 85% within two iterations by optimizing prompts and embeddings. I combine structured thinking with a maker mindset.`,
-  grow:`The top 3 areas I’m currently focusing on are:\n1) Research-driven AI development - understanding transformer architectures beyond APIs and experimenting with synthetic data for domain adaptation.\n2) Leadership and mentoring - guiding others to build reliable AI workflows.\n3) Product storytelling - communicating technical impact clearly to non-technical stakeholders. I believe growth means combining technical excellence with communication and vision.`,
-  miscon:`People sometimes assume I’m entirely technical and prefer working solo because of my focus on automation and systems. In reality, collaboration is my strength - I’ve worked closely with cloud, data, and DevOps teams, and I enjoy turning complex requests into clear, documented workflows. I’m structured, not silent - I just believe clarity comes from precision, not volume.`,
-  push:`I push my boundaries by deliberately taking on high-stakes challenges outside my comfort zone. For instance, I once built a fully functional Azure OpenAI Copilot integration over a weekend to prove a concept that later became part of an enterprise demo. I love building quickly, learning through feedback, and converting ideas into measurable outcomes - that’s how I grow with every project.`
+/* ====== personalized canned replies (resume-based) ====== */
+const canned = {
+  life: `I began in civil engineering, then transitioned into AI and cloud engineering. I’ve delivered enterprise AI agents, built RAG pipelines, and automated MLOps on Azure and GCP - combining engineering fundamentals with product focus to ship reliable features.`,
+  superpower: `My superpower is structured problem decomposition combined with rapid execution - breaking ambiguous problems into data, model, UX and monitoring. I once improved an agent's accuracy by iterating prompts, embeddings and validation in two quick cycles.`,
+  grow: `Top growth areas:\n1) Research-driven model design\n2) Leadership & mentoring\n3) Product storytelling: bridging technical impact to stakeholders.`,
+  miscon: `People think I prefer working solo because I focus; actually I value structured collaboration and clear documentation, and I often drive cross-functional work to delivery.`,
+  push: `I push boundaries by building short, high-impact prototypes - e.g., a weekend PoC integrating Azure OpenAI as a Copilot that later influenced an enterprise demo. I learn by shipping and measuring.`
 };
 
-const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-const supported=!!SpeechRecognition;
-let recognition=null;
-if(supported){
-  recognition=new SpeechRecognition();
-  recognition.lang='en-IN';
-  recognition.interimResults=false;
-  recognition.onstart=()=>{setStatus('Listening...');mic.classList.add('listening');};
-  recognition.onend=()=>{setStatus('Idle');mic.classList.remove('listening');};
-  recognition.onerror=e=>{setStatus('Error: '+(e.error||e.message));mic.classList.remove('listening');};
-  recognition.onresult=ev=>{const t=ev.results[0][0].transcript;q.value=t;setStatus('Heard: "'+t+'"');handleQuestion(t);};
+/* ====== UI refs ====== */
+const micBtn = document.getElementById('mic');
+const meterCanvas = document.getElementById('meterCanvas');
+const sendBtn = document.getElementById('send');
+const stopBtn = document.getElementById('stop');
+const qInput = document.getElementById('q');
+const responseEl = document.getElementById('response');
+const statusEl = document.getElementById('status');
+const personaEl = document.getElementById('persona');
+const playAgainBtn = document.getElementById('playAgain');
+const copyBtn = document.getElementById('copyResp');
+const downloadBtn = document.getElementById('download');
+const voiceSelect = document.getElementById('voiceSelect');
+const sampleBtns = document.querySelectorAll('.sampleBtn');
+
+/* ====== SpeechRecognition (voice input) ====== */
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let supportedSR = !!SpeechRecognition;
+if (supportedSR) {
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-IN';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  recognition.onstart = () => { setStatus('Listening...'); micBtn.classList.add('listening'); micBtn.setAttribute('aria-pressed','true'); startVisualizer(); };
+  recognition.onend = () => { setStatus('Idle'); micBtn.classList.remove('listening'); micBtn.setAttribute('aria-pressed','false'); stopVisualizer(); };
+  recognition.onerror = (e) => { setStatus('Error: ' + (e.error || e.message)); micBtn.classList.remove('listening'); stopVisualizer(); };
+  recognition.onresult = (ev) => {
+    const t = ev.results[0][0].transcript;
+    qInput.value = t;
+    setStatus('Heard: "' + t + '"');
+    handleQuestion(t);
+  };
 }
-const mic=document.getElementById('mic'),
-stop=document.getElementById('stop'),
-send=document.getElementById('send'),
-q=document.getElementById('q'),
-response=document.getElementById('response'),
-status=document.getElementById('status'),
-persona=document.getElementById('persona');
-mic.onclick=()=>{if(!supported)return alert('Use Chrome for speech');try{q.value='';response.innerText='Listening...';recognition.start();}catch(e){}};
-stop.onclick=()=>{if(recognition)recognition.stop();setStatus('Stopped');};
-send.onclick=()=>handleQuestion(q.value.trim());
-document.querySelectorAll('.sampleBtn').forEach(b=>b.onclick=()=>{q.value=b.innerText;handleQuestion(b.innerText);});
-q.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();handleQuestion(q.value.trim());}};
-function setStatus(t){status.innerText=t;}
-function chooseAnswer(qtxt){
-  const s=qtxt.toLowerCase();
-  if(/life|story|background/.test(s))return canned.life;
-  if(/superpower|strength/.test(s))return canned.superpower;
-  if(/top 3|grow|improve/.test(s))return canned.grow;
-  if(/misconception|coworkers|people think/.test(s))return canned.miscon;
-  if(/push|limit|boundary/.test(s))return canned.push;
-  return "Thanks - here's a short structured reply: clarify goal, give example, finish with growth insight.";
+
+/* ====== Mic visualizer (WebAudio analyser) ====== */
+let audioContext = null, analyser = null, meterStream = null, meterRAF = null;
+const canvasCtx = meterCanvas.getContext('2d');
+
+function startVisualizer(){
+  if (audioContext) return;
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    meterStream = stream;
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioContext.createMediaStreamSource(stream);
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+    source.connect(analyser);
+    drawMeter();
+  }).catch(err => {
+    console.warn('Microphone access denied or unavailable', err);
+  });
 }
+function stopVisualizer(){
+  if (meterRAF) cancelAnimationFrame(meterRAF);
+  if (analyser) analyser.disconnect();
+  if (meterStream) {
+    meterStream.getTracks().forEach(t => t.stop());
+    meterStream = null;
+  }
+  analyser = null;
+  audioContext && audioContext.close().catch(()=>{}); audioContext = null;
+  clearCanvas();
+}
+function drawMeter(){
+  const w = meterCanvas.width, h = meterCanvas.height;
+  const bufferLength = analyser.frequencyBinCount;
+  const data = new Uint8Array(bufferLength);
+  function draw(){
+    analyser.getByteTimeDomainData(data);
+    // compute rms-like level
+    let sum = 0;
+    for (let i=0;i<data.length;i++){ const v = (data[i]-128)/128; sum += v*v; }
+    const rms = Math.sqrt(sum/data.length);
+    renderMeter(rms);
+    meterRAF = requestAnimationFrame(draw);
+  }
+  draw();
+}
+function renderMeter(level){
+  const ctx = canvasCtx;
+  const w = meterCanvas.width, h = meterCanvas.height;
+  ctx.clearRect(0,0,w,h);
+  // background
+  ctx.fillStyle = 'rgba(255,255,255,0.03)';
+  ctx.fillRect(0,0,w,h);
+  // bars
+  const bars = 16;
+  const gap = 2;
+  const bw = (w - (bars-1)*gap) / bars;
+  for (let i=0;i<bars;i++){
+    const x = i*(bw+gap);
+    // create a wave-ish pattern based on index and level
+    const heightFactor = Math.max(0, Math.min(1, (Math.sin(i/3)+1)/2 + level*2 ));
+    const barH = Math.max(3, heightFactor * h * (0.9 - i*0.02));
+    // color gradient
+    const grad = ctx.createLinearGradient(0, h-barH, 0, h);
+    grad.addColorStop(0, 'rgba(15,157,88,0.95)');
+    grad.addColorStop(1, 'rgba(10,127,68,0.6)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(x, h - barH, bw, barH);
+  }
+}
+function clearCanvas(){
+  canvasCtx.clearRect(0,0,meterCanvas.width,meterCanvas.height);
+  // subtle placeholder
+  canvasCtx.fillStyle = 'rgba(255,255,255,0.02)';
+  canvasCtx.fillRect(0,0,meterCanvas.width,meterCanvas.height);
+}
+
+/* ====== TTS (voice) with gender preference & male fallback ====== */
+function speak(text){
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  // ensure voices loaded
+  let voices = window.speechSynthesis.getVoices() || [];
+  if (!voices.length) {
+    // try to trigger loading
+    window.speechSynthesis.onvoiceschanged = () => { voices = window.speechSynthesis.getVoices(); doSpeak(); };
+    // fallback small delay
+    setTimeout(() => { voices = window.speechSynthesis.getVoices(); doSpeak(); }, 200);
+  } else doSpeak();
+
+  function doSpeak(){
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'en-US';
+    utter.rate = 1;
+    const pref = voiceSelect.value || 'male';
+    const maleRegex = /male|David|Alex|Daniel|George|Google UK English Male|Microsoft David/i;
+    const femaleRegex = /female|Samantha|Zira|Jenny|Google US English|Microsoft Hazel/i;
+    let chosen = null;
+    if (pref === 'male') chosen = voices.find(v => maleRegex.test(v.name) || maleRegex.test(v.voiceURI));
+    if (!chosen && pref === 'female') chosen = voices.find(v => femaleRegex.test(v.name) || femaleRegex.test(v.voiceURI));
+    if (!chosen && pref === 'default') chosen = voices.find(v => /en-?us|en-?gb|en-?in/i.test(v.lang));
+    if (!chosen) chosen = voices.find(v => maleRegex.test(v.name)) || voices[0];
+    if (chosen) utter.voice = chosen;
+    micBtn.classList.add('listening');
+    setStatus('Speaking...');
+    utter.onend = () => { micBtn.classList.remove('listening'); setStatus('Ready'); };
+    utter.onerror = () => { micBtn.classList.remove('listening'); setStatus('TTS error'); };
+    window.speechSynthesis.speak(utter);
+  }
+}
+
+/* ====== Response typing effect ====== */
+function typeOut(text, el, speed = 16){
+  el.innerText = '';
+  let i = 0;
+  const timer = setInterval(() => {
+    el.innerText = text.slice(0, i);
+    i++;
+    if (i > text.length) clearInterval(timer);
+  }, speed);
+}
+
+/* ====== question -> choose answer logic ====== */
+function chooseAnswer(q){
+  const s = (q||'').toLowerCase();
+  if (/life|story|background|who are you/.test(s)) return canned.life;
+  if (/superpower|strength|#1/.test(s)) return canned.superpower;
+  if (/top 3|areas you'd like to grow|grow in|improve/.test(s)) return canned.grow;
+  if (/misconception|coworkers|people think/.test(s)) return canned.miscon;
+  if (/push.*boundary|push.*limit|push your boundaries|how do you push|limits/.test(s)) return canned.push;
+  return `Thanks - here's a short structured reply:\n1) Clarify the goal.\n2) Share a brief example.\n3) Finish with a growth insight.`;
+}
+
+/* ====== main handler ====== */
+let lastAnswer = '';
+sendBtn.addEventListener('click', () => handleQuestion(qInput.value.trim()));
+qInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); handleQuestion(qInput.value.trim()); } });
+document.querySelectorAll('.sampleBtn').forEach(b => b.addEventListener('click', () => { qInput.value = b.innerText; handleQuestion(b.innerText); }));
+playAgainBtn.addEventListener('click', () => { if (lastAnswer) speak(lastAnswer); });
+copyBtn.addEventListener('click', () => { navigator.clipboard?.writeText(responseEl.innerText).then(()=>setStatus('Copied')); });
+downloadBtn.addEventListener('click', () => {
+  const blob = new Blob([responseEl.innerText], {type:'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'voicebot-response.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+
+/* mic start/stop */
+micBtn.addEventListener('click', () => {
+  if (!supportedSR) return alert('SpeechRecognition not supported. Use Chrome on desktop or Android.');
+  try{
+    qInput.value = '';
+    responseEl.innerText = 'Listening...';
+    recognition.start();
+    // also kick off visualizer via getUserMedia (visualizes while recognition running)
+    startVisualizer();
+  } catch(e){ console.warn(e); setStatus('SR error'); }
+});
+stopBtn.addEventListener('click', ()=>{ if (recognition) recognition.stop(); setStatus('Stopped'); stopVisualizer(); });
+
 function handleQuestion(raw){
-  const qv=(raw||'').trim();
-  if(!qv)return alert('Please ask a question.');
+  const q = (raw||'').trim();
+  if (!q) return alert('Please ask a question.');
   setStatus('Processing...');
-  const ans=chooseAnswer(qv);
-  const final=assemble(persona.value,ans);
-  response.innerText=final;
+  const ans = chooseAnswer(q);
+  const persona = (personaEl.value || '').trim();
+  const final = (persona ? `(${persona})\n\n` : '') + ans;
+  lastAnswer = final;
+  typeOut(final, responseEl, 16);
   speak(final);
   setStatus('Answered');
 }
-function assemble(p,a){return(p?'('+p+')\n\n':'')+a;}
-function speak(t){if(!('speechSynthesis'in window))return;window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=1;window.speechSynthesis.speak(u);}
+
+/* small helpers */
+function setStatus(t){ statusEl.innerText = t; }
+
+/* initialize */
 setStatus('Idle');
+clearCanvas();
+
+/* ensure canvas crispness on high-dpi */
+(function resizeCanvas(){
+  const ratio = window.devicePixelRatio || 1;
+  meterCanvas.width = Math.floor(meterCanvas.clientWidth * ratio);
+  meterCanvas.height = Math.floor(meterCanvas.clientHeight * ratio);
+  canvasCtx.scale(ratio, ratio);
+})();
+window.addEventListener('resize', () => {
+  const ratio = window.devicePixelRatio || 1;
+  meterCanvas.width = Math.floor(meterCanvas.clientWidth * ratio);
+  meterCanvas.height = Math.floor(meterCanvas.clientHeight * ratio);
+  canvasCtx.scale(ratio, ratio);
+});
 </script>
 </body>
 </html>
